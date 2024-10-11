@@ -1,0 +1,17 @@
+body {
+    margin: 0;
+    background: #2a2929;
+}
+
+.board {
+    display: grid;
+    grid-auto-rows: 1fr;
+    width: 400px;
+    height: 400px;
+    background-color: #3c3b3b;
+}
+
+.field {
+    display: flex;
+    height: 1fr
+}

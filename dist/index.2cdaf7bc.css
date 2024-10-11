@@ -1,0 +1,18 @@
+body {
+  background: #2a2929;
+  margin: 0;
+}
+
+.board {
+  background-color: #3c3b3b;
+  grid-auto-rows: 1fr;
+  width: 400px;
+  height: 400px;
+  display: grid;
+}
+
+.field {
+  height: 1fr;
+  display: flex;
+}
+/*# sourceMappingURL=index.2cdaf7bc.css.map */
