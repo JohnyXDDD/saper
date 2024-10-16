@@ -595,11 +595,14 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createBoard", ()=>createBoard);
 const Fields = [];
 class Field {
-    constructor(id){
+    constructor(id, size){
         this.id = id;
+        this.row = Math.floor(this.id / size);
+        this.column = this.id % size;
         this.isMine = false;
         this.value = null;
         this.div = document.createElement("div");
+        this.div.innerHTML = `${this.row} ${this.column}`;
         this.div.className = "field";
     }
 }
@@ -607,18 +610,19 @@ function createBoard(size, mines) {
     const board = document.createElement("div");
     document.querySelector("main").append(board);
     board.classList.add("board");
-    board.style.gridTemplateColumns = `repeat(${size}, 1fr)` // to usunięcia
+    board.style.gridTemplateColumns = `repeat(${size}, 1fr)` // do usunięcia
     ;
     board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
     for(let i = 0; i < size * size; i++){
-        const field = new Field(i);
+        const field = new Field(i, size);
         Fields.push(field);
+        board.append(field.div);
     }
     const minesArray = getMines(mines);
     minesArray.forEach((mineNumber)=>{
         Fields[mineNumber].isMine = true;
     });
-    updateFieldsValue(size);
+    updateFieldsValue(minesArray, size);
 }
 function getMines(minesAmmount) {
     const minesArray = [];
@@ -628,13 +632,14 @@ function getMines(minesAmmount) {
     }
     return minesArray;
 }
-function updateFieldsValue() {
-    Fields.forEach((field)=>{
-        if (field.isMine) {
-            const id = field.id;
-        }
+function updateFieldsValue(minesArray, size) {
+    minesArray.forEach((mine)=>{
+        const field = Fields[mine];
+        if (field.row == 0) ;
+        else field.row;
     });
 }
+function checkIfFieldIsProper(field, id) {}
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"51BJs"}],"51BJs":[function(require,module,exports) {
 exports.interopDefault = function(a) {
