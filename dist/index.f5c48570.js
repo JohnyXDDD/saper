@@ -600,10 +600,13 @@ class Field {
         this.row = Math.floor(this.id / size);
         this.column = this.id % size;
         this.isMine = false;
-        this.value = null;
+        this.value = 0;
         this.div = document.createElement("div");
         this.div.innerHTML = `${this.row} ${this.column}`;
         this.div.className = "field";
+    }
+    changeValue() {
+        this.value += 1;
     }
 }
 function createBoard(size, mines) {
@@ -619,6 +622,7 @@ function createBoard(size, mines) {
         board.append(field.div);
     }
     const minesArray = getMines(mines);
+    console.log(minesArray);
     minesArray.forEach((mineNumber)=>{
         Fields[mineNumber].isMine = true;
     });
@@ -635,11 +639,20 @@ function getMines(minesAmmount) {
 function updateFieldsValue(minesArray, size) {
     minesArray.forEach((mine)=>{
         const field = Fields[mine];
-        if (field.row == 0) ;
-        else field.row;
+        const { row, column } = field;
+        const rowsToUpdate = [];
+        const columnsToUpdate = [];
+        row == 0 ? rowsToUpdate.push(row, row + 1) : row == size - 1 ? rowsToUpdate.push(row, row - 1) : rowsToUpdate.push(row - 1, row, row + 1);
+        column == 0 ? columnsToUpdate.push(column, column + 1) : column == size - 1 ? columnsToUpdate.push(column, column - 1) : columnsToUpdate.push(column - 1, column, column + 1);
+        rowsToUpdate.forEach((row)=>{
+            columnsToUpdate.forEach((column)=>{
+                const field = Fields.find((field)=>field.row == 1 && field.column == column && field.isMine == false);
+                console.log(field);
+                field.changeValue();
+            });
+        });
     });
 }
-function checkIfFieldIsProper(field, id) {}
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"51BJs"}],"51BJs":[function(require,module,exports) {
 exports.interopDefault = function(a) {
