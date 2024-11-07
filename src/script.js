@@ -1,6 +1,4 @@
 import { createBoard } from "./components/minesweeper"
-const boardSize = 10
-const mines = 5
+const boardSize = 7
+const mines = 10
 createBoard(boardSize, mines)
-
-
