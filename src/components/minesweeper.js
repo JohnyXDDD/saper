@@ -3,7 +3,7 @@ class Field {
     constructor(id) {
         this.id = id
         this.isMine = false
-        this.value = null
+        this.value = 0
         this.div = document.createElement('div')
         this.div.className = 'field'
         this.div.innerText = ""
