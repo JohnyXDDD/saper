@@ -1,4 +1,4 @@
-import { createBoard } from "./components/minesweeper"
+import { startGame } from "./components/minesweeper"
 const boardSize = 7
 const mines = 10
-createBoard(boardSize, mines)
+startGame(boardSize, mines)

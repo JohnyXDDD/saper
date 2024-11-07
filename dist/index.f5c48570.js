@@ -585,73 +585,159 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"8ZNvh":[function(require,module,exports) {
 var _minesweeper = require("./components/minesweeper");
-const boardSize = 10;
-const mines = 5;
-(0, _minesweeper.createBoard)(boardSize, mines);
+const boardSize = 7;
+const mines = 10;
+(0, _minesweeper.startGame)(boardSize, mines);
 
 },{"./components/minesweeper":"aa2aw"}],"aa2aw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "createBoard", ()=>createBoard);
+parcelHelpers.export(exports, "startGame", ()=>startGame);
 const Fields = [];
 class Field {
-    constructor(id, size){
+    constructor(id){
         this.id = id;
-        this.row = Math.floor(this.id / size);
-        this.column = this.id % size;
         this.isMine = false;
         this.value = 0;
+        this.revealed = false;
         this.div = document.createElement("div");
-        this.div.innerHTML = `${this.row} ${this.column}`;
         this.div.className = "field";
+        this.div.innerText = "";
+        // this.revealOne = this.revealOne.bind(this)
+        this.div.addEventListener("click", this.revealOne);
     }
-    changeValue() {
-        this.value += 1;
+    updateValue() {
+        this.value = this.value + 1;
+    }
+    revealOne = ()=>{
+        if (this.isMine) {
+            this.div.style.backgroundColor = "red";
+            const x = Fields.length;
+            const y = Fields[0].length;
+            disableAllEvents(x, y);
+        } else if (this.value > 0) {
+            this.div.style.backgroundColor = "green";
+            this.disableClick();
+        } else {
+            console.log(this.div);
+            this.div.style.backgroundColor = "blue";
+            this.disableClick();
+            this.revealOthers();
+        }
+    };
+    revealOthers() {
+        const x = Fields.length;
+        const y = Fields[0].length;
+        const row1 = parseInt(this.id / x);
+        const column1 = this.id % y;
+        const rowsToUpdate = [
+            row1 - 1,
+            row1,
+            row1 + 1
+        ];
+        const columnsToUpdate = [
+            column1 - 1,
+            column1,
+            column1 + 1
+        ];
+        rowsToUpdate.forEach((row1)=>{
+            if (row1 >= 0 && row1 < x) columnsToUpdate.forEach((column1)=>{
+                if (column1 >= 0 && column1 < y) {
+                    const field = Fields[row1][column1];
+                    if (field.isMine == false && field.revealed == false) reveal(field);
+                }
+            });
+        });
+    }
+    disableClick() {
+        console.log("uwu");
+        this.div.removeEventListener("click", this.revealOne);
     }
 }
-function createBoard(size, mines) {
-    const board = document.createElement("div");
-    document.querySelector("main").append(board);
-    board.classList.add("board");
-    board.style.gridTemplateColumns = `repeat(${size}, 1fr)` // do usunięcia
-    ;
-    board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
-    for(let i = 0; i < size * size; i++){
-        const field = new Field(i, size);
-        Fields.push(field);
-        board.append(field.div);
+function disableAllEvents(x, y) {
+    for(let i = 0; i < x; i++)for(let j = 0; j < y; j++){
+        const field = Fields[i][j];
+        field.disableClick();
     }
-    const minesArray = getMines(mines);
-    console.log(minesArray);
+}
+function reveal(field) {
+    field.revealed = true;
+    if (field.value > 0) {
+        field.div.style.backgroundColor = "green";
+        field.disableClick();
+    } else {
+        field.div.style.backgroundColor = "blue";
+        field.disableClick();
+        field.revealOthers();
+    }
+}
+function startGame(size, mines) {
+    for(let i = 0; i < size; i++){
+        const row1 = [];
+        for(let j = 0; j < size; j++){
+            const field = new Field(i * size + j);
+            row1.push(field);
+        }
+        Fields.push(row1);
+    }
+    const minesArray = getMines(mines, size);
+    mines = [];
     minesArray.forEach((mineNumber)=>{
-        Fields[mineNumber].isMine = true;
+        row = parseInt(mineNumber / size);
+        column = mineNumber % size;
+        mine = {
+            row,
+            column
+        };
+        mines.push(mine);
+        Fields[row][column].isMine = true;
     });
-    updateFieldsValue(minesArray, size);
+    updateFieldsValue(mines, size);
 }
-function getMines(minesAmmount) {
+function getMines(minesAmmount, size) {
     const minesArray = [];
     for(let i = 0; i < minesAmmount; i++){
-        let randomNumber = Math.floor(Math.random() * 100);
+        let randomNumber = Math.floor(Math.random() * size * size);
         while(!minesArray.includes(randomNumber))minesArray.push(randomNumber);
     }
     return minesArray;
 }
+function generateBoard(size) {
+    const board = document.createElement("div");
+    document.querySelector("main").append(board);
+    board.classList.add("board");
+    board.style.gridTemplateColumns = `repeat(${size}, 1fr)` // Jednak nie bo może być prostokątna plansza
+    ;
+    board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    for(let i = 0; i < size; i++)for(let j = 0; j < size; j++){
+        const field = Fields[i][j];
+        field.div.innerText = field.isMine ? "M" : field.value ? field.value : "0";
+        board.append(field.div);
+    }
+}
 function updateFieldsValue(minesArray, size) {
-    minesArray.forEach((mine)=>{
-        const field = Fields[mine];
-        const { row, column } = field;
-        const rowsToUpdate = [];
-        const columnsToUpdate = [];
-        row == 0 ? rowsToUpdate.push(row, row + 1) : row == size - 1 ? rowsToUpdate.push(row, row - 1) : rowsToUpdate.push(row - 1, row, row + 1);
-        column == 0 ? columnsToUpdate.push(column, column + 1) : column == size - 1 ? columnsToUpdate.push(column, column - 1) : columnsToUpdate.push(column - 1, column, column + 1);
-        rowsToUpdate.forEach((row)=>{
-            columnsToUpdate.forEach((column)=>{
-                const field = Fields.find((field)=>field.row == 1 && field.column == column && field.isMine == false);
-                console.log(field);
-                field.changeValue();
+    minesArray.forEach((mine1)=>{
+        const row1 = mine1.row;
+        const column1 = mine1.column;
+        const rowsToUpdate = [
+            row1 - 1,
+            row1,
+            row1 + 1
+        ];
+        const columnsToUpdate = [
+            column1 - 1,
+            column1,
+            column1 + 1
+        ];
+        rowsToUpdate.forEach((row1)=>{
+            if (row1 >= 0 && row1 < size) columnsToUpdate.forEach((column1)=>{
+                if (column1 >= 0 && column1 < size) {
+                    if (Fields[row1][column1].isMine == false) Fields[row1][column1].updateValue();
+                }
             });
         });
     });
+    generateBoard(size);
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"51BJs"}],"51BJs":[function(require,module,exports) {

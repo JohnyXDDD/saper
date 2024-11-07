@@ -4,31 +4,82 @@ class Field {
         this.id = id
         this.isMine = false
         this.value = 0
+        this.revealed = false
         this.div = document.createElement('div')
         this.div.className = 'field'
         this.div.innerText = ""
-        this.div.addEventListener('click', () => this.reveal())
+        // this.revealOne = this.revealOne.bind(this)
+        this.div.addEventListener('click', this.revealOne)
     }
     updateValue() {
         this.value = this.value + 1
     }
 
-    reveal() {
+    revealOne = () => {
         if (this.isMine) {
-            console.log("You lost")
             this.div.style.backgroundColor = 'red'
+            const x = Fields.length
+            const y = Fields[0].length
+            disableAllEvents(x, y)
         }
-        else if (this.value != null) {
+        else if (this.value > 0) {
             this.div.style.backgroundColor = 'green'
+            this.disableClick()
         }
         else {
+            console.log(this.div)
             this.div.style.backgroundColor = 'blue'
+            this.disableClick()
+            this.revealOthers()
         }
+    }
+    revealOthers() {
+        const x = Fields.length
+        const y = Fields[0].length
+        const row = parseInt(this.id / x)
+        const column = this.id % y
+        const rowsToUpdate = [row - 1, row, row + 1]
+        const columnsToUpdate = [column - 1, column, column + 1]
+        rowsToUpdate.forEach(row => {
+            if (row >= 0 && row < x) {
+                columnsToUpdate.forEach(column => {
+                    if (column >= 0 && column < y) {
+                        const field = Fields[row][column]
+                        if (field.isMine == false && field.revealed == false) {
+                            reveal(field)
+                        }
+                    }
+                })
+            }
+        })
 
-        console.log(this.div.innerText)
+    }
+    disableClick() {
+        console.log('uwu')
+        this.div.removeEventListener('click', this.revealOne)
     }
 }
-export function createBoard(size, mines) {
+function disableAllEvents(x, y) {
+    for (let i = 0; i < x; i++) {
+        for (let j = 0; j < y; j++) {
+            const field = Fields[i][j]
+            field.disableClick()
+        }
+    }
+}
+function reveal(field) {
+    field.revealed = true
+    if (field.value > 0) {
+        field.div.style.backgroundColor = 'green'
+        field.disableClick()
+    }
+    else {
+        field.div.style.backgroundColor = 'blue'
+        field.disableClick()
+        field.revealOthers()
+    }
+}
+export function startGame(size, mines) {
     for (let i = 0; i < size; i++) {
         const row = []
         for (let j = 0; j < size; j++) {
