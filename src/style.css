@@ -1,22 +1,190 @@
-body {
-    margin: 0;
-    background: #2a2929;
-}
-
-.board {
-    display: grid;
-    grid-auto-rows: 1fr;
-    width: 400px;
-    height: 400px;
-    background-color: #3c3b3b;
-}
-
-.field {
-    display: flex;
-    height: 1fr
-}
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     text-align: center;
     vertical-align: middle;
+    font-family: "Sour Gummy", sans-serif;
+    color: #F4EEDB;
+}
+
+body {
+    margin: 0;
+    background: #6A91AB;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100svh;
+    overflow: hidden;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    margin: 0;
+    font-family: "Sour Gummy", sans-serif;
+    color: #F4EEDB;
+    font-size: 3em;
+}
+
+.flexBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info {
+    display: flex;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.info div {
+    width: 33.3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info div span {
+    margin-left: 8px;
+}
+
+.board {
+    align-self: flex-start;
+    display: grid;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: #F4EEDB;
+    border: 8px solid #202B55;
+    border-radius: 24px;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #202B55;
+    background-color: #F4EEDB;
+    cursor: pointer;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 1.7rem;
+}
+
+.left {
+    border-left: 4px solid #202B55;
+}
+
+.right {
+    border-right: 4px solid #202B55;
+}
+
+.top {
+    border-top: 4px solid #202B55;
+}
+
+.bottom {
+    border-bottom: 4px solid #202B55;
+}
+
+.close {
+    background-color: #6A91AB;
+    color: white;
+    font-weight: bold;
+}
+
+.empty {
+    background-color: #B0CDDA;
+}
+
+input {
+    color: #202B55;
+    outline: none;
+    width: 64px;
+    height: 32px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background-color: #F4EEDB;
+}
+
+
+#newGame {
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    width: 300px;
+    font-size: 20px;
+    border: 4px solid #202B55;
+    background-color: #202B55;
+    border-radius: 12px;
+    color: #F4EEDB;
+
+}
+
+.boardSizeBox {
+    margin: 8px 0 4px 0;
+}
+
+#mines {
+    background: none;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #F4EEDB;
+    height: 40px;
+    width: 40px;
+}
+
+@media(max-width:900px) {
+
+    .board,
+    .info,
+    .newGameBox {
+        scale: 0.9;
+    }
+
+    h1 {
+        font-size: 2.7rem
+    }
+}
+
+@media(max-width:768px) {
+
+    .board,
+    .info,
+    .newGameBox {
+        scale: 0.8;
+    }
+
+    h1 {
+        font-size: 2.5rem
+    }
+}
+
+@media(max-width:660px) {
+    .board {
+        scale: 0.6;
+    }
+
+    h1 {
+        font-size: 2.5rem
+    }
+}
+
+@media(max-width:500px) {
+    .board {
+        scale: 0.5;
+    }
+
+    h1 {
+        font-size: 2.5rem
+    }
 }

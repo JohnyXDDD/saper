@@ -5,14 +5,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MINESWEEPER</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" defer src="script.js"></script>
+    <link rel="shortcut icon" href="images/bomb.png" type="image/x-icon">
+    <script defer
+        src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
 </head>
 
 <body>
+    <h1>MINESWEEPER</h1>
     <main>
+        <div class="info">
+            <div>&#128681 <span id="remainingFlags">0</span></div>
+            <div>&#9202 <span id="time">0:00</span></div>
+            <div>&#128163 <span id="minesNumber">0</span></div>
+        </div>
     </main>
+    <div class="newGameBox">
+
+        <form action="#" id="form">
+            <button id="newGame">Nowa gra</button>
+            <div class="boardSizeBox">
+                <input type="number" class="boardSize" id="columns" min="5" max="16" value="8">
+                <span>X</span>
+                <input type="number" class="boardSize" id="rows" min="5" max="16" value="8">
+            </div>
+            <div class="flexBox">
+                MINY: <input type="number" id="mines" value="10" disabled>
+            </div>
+
+        </form>
+    </div>
 </body>
 
 </html>
