@@ -14,7 +14,6 @@
 </head>
 
 <body>
-    <h1>MINESWEEPER</h1>
     <main>
         <div class="info">
             <div>&#128681 <span id="remainingFlags">0</span></div>
@@ -23,18 +22,18 @@
         </div>
     </main>
     <div class="newGameBox">
-
+        
         <form action="#" id="form">
             <button id="newGame">Nowa gra</button>
             <div class="boardSizeBox">
-                <input type="number" class="boardSize" id="columns" min="5" max="16" value="8">
+                <input type="number" class="boardSize" id="columns" min="5" max="12" value="8">
                 <span>X</span>
-                <input type="number" class="boardSize" id="rows" min="5" max="16" value="8">
+                <input type="number" class="boardSize" id="rows" min="5" max="12" value="8">
             </div>
             <div class="flexBox">
                 MINY: <input type="number" id="mines" value="10" disabled>
             </div>
-
+            
         </form>
     </div>
 </body>
